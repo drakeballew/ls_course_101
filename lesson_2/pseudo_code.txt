@@ -1,0 +1,41 @@
+### a method that returns the sum of two integers
+START
+
+# Given two integers as variables
+first_integer + second_integer
+
+END
+
+### a method that takes an array of strings, and returns a string that is all those strings concatenated together
+
+START
+
+# Given an array of strings called "words"
+
+SET long_string = words at index 0
+SET iterator = 1
+
+WHILE iterator < length of words
+  SET long_strong to current value plus value of words at iterator index
+  iterator = iterator + 1
+
+PRINT long_string
+
+END
+
+### a method that takes an array of integers, and returns a new array with every other element
+
+START
+
+# Given an array of integers called 'numbers'
+
+SET mapped_numbers = empty array
+SET count = 1
+
+WHILE count < numbers length
+  SET mapped_numbers to current value plus the value at numbers' count index
+  count = count + 2
+
+print mapped_numbers
+
+END
