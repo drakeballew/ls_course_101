@@ -4,15 +4,12 @@ require 'pry'
 LANGUAGE = 'en'
 MESSAGES = YAML.load_file('calculator_messages.yml')
 
-
 def messages(message, lang='en')
   MESSAGES[lang][message]
 end
 
 
-# ask the user for two numbers
-def prompt(key)
-  message = messages(key, LANGUAGE)
+def prompt(message)
   puts "=> #{message}"
 end
 
@@ -21,29 +18,19 @@ def valid_number?(num)
 end
 
 def operation_to_message(op)
-  x = case op
-    when '1'
-      'Adding'
-    when '2'
-      'Subtracting'
-    when '3'
-      'Multiplying'
-    when '4'
-      'Dividing'
-    end
-  y = "Testing"
-  x
+  case op
+  when '1'
+    messages('adding', LANGUAGE)
+  when '2'
+    messages('subtracting', LANGUAGE)
+  when '3'
+    messages('multiplying', LANGUAGE)
+  when '4'
+    messages('dividing', LANGUAGE)
+  end
 end
 
-operator_prompt = <<-MSG
-  What operation would you like to perform?
-    1) add
-    2) subtract
-    3) multiply
-    4) divide
-MSG
-
-prompt('welcome')
+prompt(messages('welcome', LANGUAGE))
 
 name = ''
 loop do
@@ -55,33 +42,33 @@ loop do
   end
 end
 
-prompt('hi')
-
+prompt("#{messages('hi', LANGUAGE)}, #{name}!")
+# ask the user for two numbers
 loop do
   number1 = ''
   loop do
-    prompt('ask_first_num')
+    prompt(messages('ask_first_num', LANGUAGE))
     number1 = gets.chomp
     if valid_number?(number1)
       break
     else
-      prompt('not_valid_num')
+      prompt(messages('not_valid_num', LANGUAGE))
     end
   end
 
   number2 = ''
   loop do
-    prompt('ask_second_num')
+    prompt(messages('ask_second_num', LANGUAGE))
     number2 = gets.chomp
     if valid_number?(number2)
       break
     else
-      prompt('not_valid_num')
+      prompt(messages('not_valid_num', LANGUAGE))
     end
   end
 
   # ask the user for an operation to perform
-  prompt(operator_prompt)
+  prompt(messages('operator_prompt', LANGUAGE))
 
   operator = ''
   loop do
@@ -89,12 +76,12 @@ loop do
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt('not_valid_operation')
+      prompt(messages('not_valid_operation', LANGUAGE))
     end
   end
   # perform the operation on the two numbers
 
-  prompt('operating_message')
+  prompt(messages('operating_message', LANGUAGE))
   result =  case operator
             when '1'
               number1.to_f + number2.to_f
@@ -107,10 +94,10 @@ loop do
             end
 
   # output the result
-  prompt('result_message')
-  prompt('recalculate_message')
+  prompt("#{messages('result_message', LANGUAGE)} #{result}.")
+  prompt(messages('recalculate_message', LANGUAGE))
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
 
-prompt('thank_you')
+prompt(messages('thank_you', LANGUAGE))
