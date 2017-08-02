@@ -1,7 +1,7 @@
 require 'yaml'
 require 'pry'
 
-LANGUAGE = 'en'
+LANGUAGE = 'es'
 MESSAGES = YAML.load_file('calculator_messages.yml')
 
 def messages(message, lang='en')
