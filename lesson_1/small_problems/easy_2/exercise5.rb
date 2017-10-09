@@ -1,8 +1,9 @@
 print 'What is your name? '
 name = gets.chomp
 
-unless /^[A-Z][a-z]+\!$/.match(name)
-  puts "Hello, #{name}."
-else
+if name[-1] == '!'
+  name = name.chop
   puts "HELLO #{name.upcase}. WHY ARE WE SCREAMING?"
+else
+  puts "Hello, #{name}."
 end
