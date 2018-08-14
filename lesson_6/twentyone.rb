@@ -81,6 +81,7 @@ def player_turn(deck, player_hand, dealer_hand)
     deal_one_card(deck, player_hand)
     display_hands(player_hand, dealer_hand)
     if busted?(player_hand) || twenty_one!(player_hand)
+      show_cards(player_hand, dealer_hand)
       declare_win_or_bust('Player', player_hand)
     end
     break if busted?(player_hand) || twenty_one!(player_hand)
@@ -95,8 +96,8 @@ def dealer_turn(deck, player_hand, dealer_hand)
           puts "Dealer hits."
           deal_one_card(deck, dealer_hand)
           display_hands(player_hand, dealer_hand)
-          declare_win_or_bust('Dealer', dealer_hand)
           if busted?(dealer_hand) || twenty_one!(dealer_hand)
+            show_cards(player_hand, dealer_hand)
             declare_win_or_bust('Player', player_hand)
           end
           break if busted?(dealer_hand) || twenty_one!(dealer_hand)
@@ -113,8 +114,14 @@ end
 
 def display_hands(player_hand, dealer_hand)
   puts "Player hand: #{player_hand}"
+  puts "Dealer hand: #{dealer_hand[0]}#{' + [?]' * dealer_hand[1..-1].count}"
+end
+
+def show_cards(player_hand, dealer_hand)
+  puts '== FINAL HANDS =='
+  puts "Player hand: #{player_hand}"
   puts "Dealer hand: #{dealer_hand}"
-  # puts "Dealer hand: #{dealer_hand[0]}#{' + [?]' * dealer_hand[1..-1].count}"
+  puts '================'
 end
 
 def busted?(hand)
@@ -142,7 +149,7 @@ def compare_hand_values(player_hand, dealer_hand)
 end
 
 def declare_winner(player_hand, dealer_hand)
-  binding.pry
+  show_cards(player_hand, dealer_hand)
   if compare_hand_values(player_hand, dealer_hand)
     puts "Player wins with #{calculate_hand_value(player_hand)} over #{calculate_hand_value(dealer_hand)}."
   else
