@@ -1,8 +1,5 @@
-require 'pry-byebug'
-
-SUITS = %w(C D H S)
-CARDS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']
-
+SUITS = %w(C D H S).freeze
+CARDS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A'].freeze
 
 def create_hands
   player_hand = [], dealer_hand = []
@@ -31,24 +28,24 @@ def calculate_aces_value(hand)
 
   ace_value =
     case
-      when ace_count == 0
-        0
-      when ace_count == 1 && calculate_other_cards_value(hand) > 10
-        1
-      when ace_count == 1 && calculate_other_cards_value(hand) <= 10
-        11
-      when ace_count == 2 && calculate_other_cards_value(hand) > 9
-        2
-      when ace_count == 2 && calculate_other_cards_value(hand) <= 9
-        12
-      when ace_count == 3 && calculate_other_cards_value(hand) > 8
-        3
-      when ace_count == 3 && calculate_other_cards_value(hand) <= 8
-        13
-      when ace_count == 4 && calculate_other_cards_value(hand) > 7
-        4
-      when ace_count == 4 && calculate_other_cards_value(hand) <= 7
-        14
+    when ace_count.zero?
+      0
+    when ace_count == 1 && calculate_other_cards_value(hand) > 10
+      1
+    when ace_count == 1 && calculate_other_cards_value(hand) <= 10
+      11
+    when ace_count == 2 && calculate_other_cards_value(hand) > 9
+      2
+    when ace_count == 2 && calculate_other_cards_value(hand) <= 9
+      12
+    when ace_count == 3 && calculate_other_cards_value(hand) > 8
+      3
+    when ace_count == 3 && calculate_other_cards_value(hand) <= 8
+      13
+    when ace_count == 4 && calculate_other_cards_value(hand) > 7
+      4
+    when ace_count == 4 && calculate_other_cards_value(hand) <= 7
+      14
     end
   ace_value
 end
@@ -58,7 +55,7 @@ def calculate_other_cards_value(hand)
   hand.each do |card|
     if card[1] == 'A'
       0
-    elsif card[1].to_i == 0
+    elsif card[1].to_i.zero?
       hand_value += 10
     else
       hand_value += card[1]
@@ -74,10 +71,10 @@ end
 def player_turn(deck, player_hand, dealer_hand)
   response = nil
   loop do
-    puts "Hit or stay? (H or S)"
+    puts 'Hit or stay? (H or S)'
     response = gets.chomp.downcase
-    break if ['s'].include?(response)
-    puts "You hit."
+    break if %w(s).include?(response)
+    puts 'You hit.'
     deal_one_card(deck, player_hand)
     display_hands(player_hand, dealer_hand)
     if busted?(player_hand) || twenty_one!(player_hand)
@@ -93,7 +90,7 @@ def dealer_turn(deck, player_hand, dealer_hand)
     loop do
       if calculate_hand_value(dealer_hand) < 17
         loop do
-          puts "Dealer hits."
+          puts 'Dealer hits.'
           deal_one_card(deck, dealer_hand)
           display_hands(player_hand, dealer_hand)
           if busted?(dealer_hand) || twenty_one!(dealer_hand)
@@ -144,35 +141,40 @@ end
 
 def compare_hand_values(player_hand, dealer_hand)
   unless busted?(player_hand) || busted?(dealer_hand)
-    calculate_hand_value(player_hand) > calculate_hand_value(dealer_hand) ? true : false
+    calculate_hand_value(player_hand) > calculate_hand_value(dealer_hand)
   end
 end
 
 def declare_winner(player_hand, dealer_hand)
   show_cards(player_hand, dealer_hand)
   if compare_hand_values(player_hand, dealer_hand)
-    puts "Player wins with #{calculate_hand_value(player_hand)} over #{calculate_hand_value(dealer_hand)}."
+    puts "Player wins with #{calculate_hand_value(player_hand)} over " +
+    "#{calculate_hand_value(dealer_hand)}."
   else
-    puts "Dealer wins with #{calculate_hand_value(dealer_hand)} over #{calculate_hand_value(player_hand)}."
+    puts "Dealer wins with #{calculate_hand_value(dealer_hand)} over " +
+    "#{calculate_hand_value(player_hand)}."
   end
 end
 
 def play_again?
   response = nil
   loop do
-    puts "Play again? (Y/N)"
+    puts 'Play again? (Y/N)'
     response = gets.chomp.downcase
-    break if ['y', 'n'].include?(response)
+    break if %w(y n).include?(response)
   end
   if response == 'y'
     play_blackjack
   else
-    puts "Thanks for playing!"
+    puts 'Thanks for playing!'
     exit
   end
 end
 
 def play_blackjack
+  # player_total = calculate_hand_value(player_hand)
+  # dealer_total = calculate_hand_value(dealer_hand)
+
   deck = new_deck
   shuffle_deck(deck)
   player_cards, dealer_cards = create_hands
